@@ -16,7 +16,7 @@ function [v,phi]=solution_calc()
     n=1;
     conv=0;
     xd=70;
-    yd=15;
+    yd=12;
     while (n<=Max)&(~conv)
         %initial state
         x(1,n)=120;
@@ -25,6 +25,7 @@ function [v,phi]=solution_calc()
         %===Propagate the state forward
         for k=1:N
             [x(k+1,n),y(k+1,n),theta(k+1,n)]=state_update(x(k,n),y(k,n),theta(k,n),u1(k,n),1,u2(k,n));
+
         end
         J(n) = 0.5*((x(N+1,n)-xd)^2+(y(N+1,n)-yd)^2+20*theta(N+1,n)^2);
 
@@ -33,8 +34,8 @@ function [v,phi]=solution_calc()
         l3(N,n)=20*theta(N+1,n);
         %===Propagate the co-state backward
         for k=N-1:-1:1
-            l1(k,n)=l1(k+1,n)+x(k+1,n);
-            l2(k,n)=l2(k+1,n)+y(k+1,n);
+            l1(k,n)=l1(k+1,n);
+            l2(k,n)=l2(k+1,n);
             l3(k,n)=-l1(k+1,n)*u1(k,n)*sin(theta(k+1,n))+l2(k+1,n)*u1(k,n)*cos(theta(k+1,n))+l3(k+1,n)+theta(k+1,n);
         end
 
@@ -54,11 +55,10 @@ function [v,phi]=solution_calc()
 
 
     iter = n-1;%final iteration index
-    [C,idx]=min(J(1:iter-1));
 
     x(N+1,iter);
     y(N+1,iter);
-    theta(N+1,iter)
+    theta(N+1,iter);
     initl1 = zeros(1,iter);
     initl2 = zeros(1,iter);
     initl3 = zeros(1,iter);
@@ -70,7 +70,7 @@ function [v,phi]=solution_calc()
 %     figure(1)
 %     plot(J(1:iter));xlabel('Iteration #');legend('Cost function (J)')
 %     figure(2)
-%     plot(x(:,idx),y(:,idx),'r.-');xlabel('x');ylabel('y');grid on
-    v=u1(:,idx);
-    phi=u2(:,idx);
+%     plot(x(:,iter),y(:,iter),'r.-');xlabel('x');ylabel('y');grid on
+    v=u1(:,iter);
+    phi=u2(:,iter);
 end
