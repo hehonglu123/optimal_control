@@ -24,7 +24,7 @@ function [v,phi]=solution_calc()
         theta(1,n)=0;
         %===Propagate the state forward
         for k=1:N
-            [x(k+1,n),y(k+1,n),theta(k+1,n)]=state_update(x(k,n),y(k,n),theta(k,n),u1(k,n),1,u2(k,n));
+            [x(k+1,n),y(k+1,n),theta(k+1,n)]=state_update(x(k,n),y(k,n),theta(k,n),u1(k,n),u2(k,n));
 
         end
         J(n) = 0.5*((x(N+1,n)-xd)^2+(y(N+1,n)-yd)^2+20*theta(N+1,n)^2);
