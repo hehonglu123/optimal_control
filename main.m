@@ -13,12 +13,12 @@ theta=0; %Automobile body initial inclination
 
 figure; %draw the empty picture 
 %Draw a diagram of the parking space
-set(line([-20 160], [60 60]), 'linewidth', 5, 'color', 'b');
-set(line([-20 40], [20 20]), 'linewidth', 5, 'color', 'b');
-set(line([40 40], [0 20]), 'linewidth', 5, 'color', 'b');
-set(line([40 100], [0 0]), 'linewidth', 5, 'color', 'b');
-set(line([100 100], [0 20]), 'linewidth', 5, 'color', 'b');
-set(line([100 160], [20 20]), 'linewidth', 5, 'color', 'b');
+set(line([-20 160], [60 60]), 'linewidth', 5, 'color', 'k');
+set(line([-20 40], [20 20]), 'linewidth', 5, 'color', 'k');
+set(line([40 40], [0 20]), 'linewidth', 5, 'color', 'k');
+set(line([40 100], [0 0]), 'linewidth', 5, 'color', 'k');
+set(line([100 100], [0 20]), 'linewidth', 5, 'color', 'k');
+set(line([100 160], [20 20]), 'linewidth', 5, 'color', 'k');
 hold on
 grid on;
 
@@ -32,17 +32,17 @@ for i = 1:10
 
     axis([-20 160 0 100]);
 
-    set(line([A(1) B(1)], [A(2) B(2)]), 'linewidth', 4, 'color', 'm');
+    set(line([A(1) B(1)], [A(2) B(2)]), 'linewidth', 2, 'color', 'g');
     set(line([B(1) D(1)], [B(2) D(2)]), 'linewidth', 2, 'color', 'b');
-    set(line([C(1) D(1)], [C(2) D(2)]), 'linewidth', 4, 'color', 'g');
+    set(line([C(1) D(1)], [C(2) D(2)]), 'linewidth', 2, 'color', 'r');
     set(line([A(1) C(1)], [A(2) C(2)]), 'linewidth', 2, 'color', 'b');
 
 end 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 N=15;
-[v,phi]=trajectory_calc(x,y,theta,N);
+% [v,phi]=trajectory_calc(x,y,theta,N);
 % [v,phi]=trajectory_opt(v,phi,x,y);
-
+[v,phi]=solution_calc(x,y,theta,N);
 for i = 1:N
     pause(0.2);
     [x,y,theta]=state_update(x,y,theta,v(i),phi(i));
@@ -54,9 +54,9 @@ for i = 1:N
     end
     [A,B,C,D]=edge(x,y,theta);
     axis([-20 160 0 100]);
-    set(line([A(1) B(1)], [A(2) B(2)]), 'linewidth', 4, 'color', 'm');
+    set(line([A(1) B(1)], [A(2) B(2)]), 'linewidth', 2, 'color', 'g');
     set(line([B(1) D(1)], [B(2) D(2)]), 'linewidth', 2, 'color', 'b');
-    set(line([C(1) D(1)], [C(2) D(2)]), 'linewidth', 4, 'color', 'g');
+    set(line([C(1) D(1)], [C(2) D(2)]), 'linewidth', 2, 'color', 'r');
     set(line([A(1) C(1)], [A(2) C(2)]), 'linewidth', 2, 'color', 'b');
      
 end 

@@ -34,7 +34,7 @@ function [v,phi]=trajectory_opt(u1,u2,x0,y0)
             [x(k+1),y(k+1),theta(k+1)]=state_update(x(k),y(k),theta(k),v(k),phi(k));
         end
 
-        [v(idx1+3:end),phi(idx1+3:end)]=trajectory_calc2(x(idx1+3),y(idx1+3),theta(idx1+3),N-idx1-2);
+        [v(idx1+3:end),phi(idx1+3:end)]=trajectory_calc(x(idx1+3),y(idx1+3),theta(idx1+3),N-idx1-2);
         
         
         for k=1:N
@@ -51,7 +51,7 @@ function [v,phi]=trajectory_opt(u1,u2,x0,y0)
             v(idx2:idx2+2)=v_temp;
             phi(idx2:idx2+2)=phi_temp;
         end
-        [v(idx2+3:end),phi(idx2+3:end)]=trajectory_calc2(x(idx2+3),y(idx2+3),theta(idx2+3),N-idx2-2);
+        [v(idx2+3:end),phi(idx2+3:end)]=trajectory_calc(x(idx2+3),y(idx2+3),theta(idx2+3),N-idx2-2);
         
     end
     

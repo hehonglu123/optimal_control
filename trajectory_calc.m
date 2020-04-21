@@ -27,7 +27,6 @@ function [v,phi]=trajectory_calc(x_cur,y_cur,theta_cur,N)
         %===Propagate the state forward
         for k=1:N
             [x(k+1,n),y(k+1,n),theta(k+1,n)]=state_update(x(k,n),y(k,n),theta(k,n),u1(k,n),u2(k,n));
-%             J(n)=J(n)+gamma^k*((x(k+1,n)-xd)^2+(y(k+1,n)-yd)^2+20*theta(k+1,n)^2);
         end
 %%%%%%%%TPBVP%%%%%%%%%%%%%%%%%        
         J(n) = 0.5*((x(N+1,n)-xd)^2+(y(N+1,n)-yd)^2+50*theta(N+1,n)^2);
@@ -41,18 +40,6 @@ function [v,phi]=trajectory_calc(x_cur,y_cur,theta_cur,N)
             l3(k,n)=-l1(k+1,n)*u1(k,n)*sin(theta(k+1,n))+l2(k+1,n)*u1(k,n)*cos(theta(k+1,n))+l3(k+1,n);
         end
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
-%%%%%%%%minimize steps%%%%%%%%%%%%%%%%%   
-%         J(n) = 0.5*J(n);
-%         l1(N,n)=gamma^N*(x(N+1,n)-xd); %terminal co-state
-%         l2(N,n)=gamma^N*(y(N+1,n)-yd);
-%         l3(N,n)=20*gamma^N*theta(N+1,n);
-%         %===Propagate the co-state backward
-%         for k=N-1:-1:1
-%             l1(k,n)=gamma^k*(x(k+1,n)-xd)+l1(k+1,n);
-%             l2(k,n)=gamma^k*( y(k+1,n)-yd)+l2(k+1,n);
-%             l3(k,n)=20*gamma^k*theta(k+1,n)-l1(k+1,n)*u1(k,n)*sin(theta(k+1,n))+l2(k+1,n)*u1(k,n)*cos(theta(k+1,n))+l3(k+1,n);
-%         end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
         
         %===Update the control input using gradient descent
         alpha = 0.001/single(idivide(n,int16(1000),'ceil')); %adaptive leaerning rate
