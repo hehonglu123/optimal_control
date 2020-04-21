@@ -2,7 +2,7 @@
 function collision=detection(x,y,theta)
 
     [A,B,C,D]=edge(x,y,theta);
-    E=[105,20];
+    E=[100,20];
     area1=triangle(A,E,B);
     area2=triangle(B,E,C);
     area3=triangle(C,E,D);
