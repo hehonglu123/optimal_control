@@ -1,7 +1,7 @@
-function [v,phi]=solution_calc(x_cur,y_cur,theta_cur)
-    Max = 50000; %increase the maximum number of iterations
+function [v,phi]=avoidance(x_cur,y_cur,theta_cur)
+    Max = 10000; %increase the maximum number of iterations
     tol=0.000001;
-    N = 15;
+    N = 3;
     l = 26;
     x = zeros(N+1,Max); %state x
     y = zeros(N+1,Max); %state y
@@ -15,31 +15,24 @@ function [v,phi]=solution_calc(x_cur,y_cur,theta_cur)
 
     n=1;
     conv=0;
-    xd=70;
-    yd=12;
+    xd=x_cur-10*sin(theta_cur);
+    yd=y_cur+10*cos(theta_cur);
    
     while (n<=Max)&(~conv)
         %initial state
         x(1,n)=x_cur;
         y(1,n)=y_cur;
         theta(1,n)=theta_cur;
-        idx=0;
+ 
         %===Propagate the state forward
         for k=1:N
             [x(k+1,n),y(k+1,n),theta(k+1,n)]=state_update(x(k,n),y(k,n),theta(k,n),u1(k,n),u2(k,n));
-            
-            collision=detection(x(k+1,n),y(k+1,n),theta(k+1,n));
-
-            if (collision==1 & idx==0)
-                idx=k-2;
-            end
         end
-        
-        J(n) = 0.5*((x(N+1,n)-xd)^2+(y(N+1,n)-yd)^2+20*theta(N+1,n)^2);
+        J(n) = 0.5*((x(N+1,n)-xd)^2+(y(N+1,n)-yd)^2);
 
         l1(N,n)=x(N+1,n)-xd; %terminal co-state
         l2(N,n)=y(N+1,n)-yd;
-        l3(N,n)=20*theta(N+1,n);
+        l3(N,n)=0;
         %===Propagate the co-state backward
         for k=N-1:-1:1
             l1(k,n)=l1(k+1,n);
@@ -55,12 +48,6 @@ function [v,phi]=solution_calc(x_cur,y_cur,theta_cur)
             u1(k,n+1) = min(8,max(-8,u1(k,n+1))); %clipping the value of u to between -1 and 1
             u2(k,n+1) = min(.8,max(-.8,u2(k,n+1)));
         end
-        if idx~=0
-            [v_temp,phi_temp]=avoidance(x(idx,n),y(idx,n),theta(idx,n));
-            u1(idx:idx+2,n+1)=v_temp;
-            u2(idx:idx+2,n+1)=phi_temp;
-        end
-        
         if n>1
         conv = norm(J(n)-J(n-1))<tol;
         end
@@ -68,12 +55,6 @@ function [v,phi]=solution_calc(x_cur,y_cur,theta_cur)
     end
 
 
-    iter = n-1;%final iteration index
-
-%     figure(1)
-%     plot(J(1:iter));xlabel('Iteration #');legend('Cost function (J)')
-%     figure(2)
-    plot(x(:,iter),y(:,iter),'r.-');xlabel('x');ylabel('y');grid on
-    v=u1(:,iter);
-    phi=u2(:,iter);
+    v=u1(:,n-1);
+    phi=u2(:,n-1);
 end

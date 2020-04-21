@@ -23,10 +23,12 @@ set(line([105 160], [20 20]), 'linewidth', 5, 'color', 'b');
 hold on
 grid on;
 
+
+
 for i = 1:22
     pause(0.1);
-    [x,y,theta]=state_update(x,y,theta,5,phi);
-      %fprintf('x = %f, y = %f, theta = %f, phi = %f, dx = %f, dy = %f\n', x, y,theta, phi, delta_x, delta_y);
+    [x,y,theta]=state_update(x,y,theta,5,0);
+
     [A,B,C,D]=edge(x,y,theta);
 
     axis([-20 160 0 100]);
@@ -38,12 +40,12 @@ for i = 1:22
 
 end 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[v,phi]=solution_calc();
 
+[v,phi]=solution_calc(x,y,theta);
 for i = 1:15
     pause(0.1);
     [x,y,theta]=state_update(x,y,theta,v(i),phi(i));
-
+    
     [A,B,C,D]=edge(x,y,theta);
     
     axis([-20 160 0 100]);
